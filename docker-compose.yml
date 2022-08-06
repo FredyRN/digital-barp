@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    env_file: .env
+    container_name: sbarp
+    depends_on:
+      - database
+    networks:
+      - default
+    ports:
+      - "10000:10000"
+    networks:
+      - backend
+  database:
+    image: postgres
+    container_name: dbarp
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "9002:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - backend
+volumes:
+  data:
+networks:
+  backend:
+    driver: bridge
