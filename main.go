@@ -1,11 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	fmt.Println("Hola mundo!!")
-	log.Println("Hola log")
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hola mundo!")
+	})
+	e.Logger.Fatal(e.Start(":8000"))
 }
