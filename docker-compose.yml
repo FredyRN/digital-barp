@@ -10,7 +10,7 @@ services:
     depends_on:
       - database
     ports:
-      - "10000:8000"
+      - "8000:1323"
     networks:
       - backend
   database:
