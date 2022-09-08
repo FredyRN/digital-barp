@@ -16,15 +16,15 @@ services:
   database:
     image: postgres:14.5-alpine
     container_name: dbarp
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
     ports:
-      - "9002:5432"
+      - "5432:5432"
     networks:
       - backend
     volumes:
-      - data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
 volumes:
   data:
 networks:
