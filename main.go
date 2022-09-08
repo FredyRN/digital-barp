@@ -9,10 +9,7 @@ import (
 )
 
 func main() {
-	config, err := settings.Load("config.yml")
-	if err != nil {
-		return err
-	}
+	conf, err := settings.Load("settings.yml")
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "It works!")
