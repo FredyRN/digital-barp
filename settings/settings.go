@@ -1,10 +1,13 @@
-package config
+package settings
 
 import (
-	"os"
+	_ "embed"
 
 	"github.com/go-yaml/yaml"
 )
+
+//go:embed settings.yaml
+var settingsFile []byte
 
 type Database struct {
 	Host     string `yaml:"host"`
@@ -18,13 +21,13 @@ type Configuration struct {
 	DB Database `yaml:"Database"`
 }
 
-func Load(file string) (*Configuration, error) {
+func Load() (*Configuration, error) {
 	config := &Configuration{}
-	content, err := os.ReadFile(file)
-	if err != nil {
-		return nil, err
-	}
-	err = yaml.Unmarshal(content, config)
+	// content, err := os.ReadFile(file)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	err := yaml.Unmarshal(settingsFile, config)
 	if err != nil {
 		return nil, err
 	}

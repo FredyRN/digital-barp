@@ -2,7 +2,7 @@ FROM golang:1.19.0-alpine3.16 AS builder
 
 LABEL maintainer = "Fredy Rodriguez - jfredy.rodriguezn@gmail.com"
 
-#Install git inside the container
+#Install container dependencies
 RUN apk update \
     && apk add --no-cache git \
     && apk add --no-cache bash \
@@ -11,15 +11,10 @@ RUN apk update \
     && apk add build-base \
     && update-ca-certificates
 
-# Create a user so the container doesn't run as root
-# RUN adduser -D -g '' ubarp
-# USER ubarp
-
 # Creates and select workdir folder
 WORKDIR /go/src/barp
 
 # Download all the dependencies
-# COPY go.mod ./
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
@@ -32,9 +27,15 @@ COPY .env .
 RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -a -installsuffix cgo -o abarp .
 
 ## Use linux alpine
-FROM alpine:latest
+FROM alpine:3.16
 
-RUN apk --no-cache add ca-certificates && update-ca-certificates
+RUN apk update \
+    && apk add --no-cache git \
+    && apk add --no-cache bash \
+    && apk add --no-cache ca-certificates \
+    && apk add --update gcc musl-dev \
+    && apk add build-base \
+    && update-ca-certificates
 
 WORKDIR /root/
 
