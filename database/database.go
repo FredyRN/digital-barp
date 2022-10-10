@@ -26,6 +26,5 @@ func Connection(DBEngine string, db_context context.Context, config *settings.Co
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(db)
 	return db
 }

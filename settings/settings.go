@@ -23,10 +23,6 @@ type Configuration struct {
 
 func Load() (*Configuration, error) {
 	config := &Configuration{}
-	// content, err := os.ReadFile(file)
-	// if err != nil {
-	// 	return nil, err
-	// }
 	err := yaml.Unmarshal(settingsFile, config)
 	if err != nil {
 		return nil, err
