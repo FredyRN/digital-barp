@@ -1,6 +1,5 @@
 '
     Database created by: Fredy Rodriguez
-    Nickname: F3deR1c0
     Description: 
     Licence: Creative Commons - CC
 '
@@ -143,6 +142,7 @@ CREATE TABLE product (
     product_supplier_id uuid NOT NULL,
     product_category uuid NOT NULL,
     product_status BOOLEAN, 'Is the product Active'
+    product_added_at TIMESTAMP DEFAULT now(),
     PRIMARY KEY (product_id),
     FOREIGN KEY (product_supplier_id) REFERENCES supplier(supplier_id),
     FOREIGN KEY (product_category) REFERENCES category(category_id)
