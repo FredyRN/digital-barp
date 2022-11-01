@@ -84,7 +84,7 @@ CREATE TABLE user_roles (
 CREATE TABLE permission (
      permission_id uuid UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
      permission VARCHAR(255) NOT NULL,
-     permission_text TEXT NOT NULL,
+     permission_description TEXT NOT NULL,
      created_at TIMESTAMP DEFAULT now(),
      PRIMARY KEY (permission_id)
 )
@@ -163,20 +163,18 @@ CREATE TABLE order (
     order_number SMALLINT,
     order_seller uuid NOT NULL,
     order_customer uuid NOT NULL,
-    order_created_at TIMESTAMP DEFAULT now(),
-    order_payment_method uuid NOT NULL,
+    order_created_at TIMESTAMP DEFAULT now(),    
     order_status BOOLEAN NOT NULL, 'Order is not paid'
     PRIMARY KEY (order_id),
     FOREIGN KEY (order_seller) REFERENCES user(user_id),
-    FOREIGN KEY (order_customer) REFERENCES user(user_id),
-    FOREIGN KEY (order_payment_method) REFERENCES payment_method(payment_method_id)
+    FOREIGN KEY (order_customer) REFERENCES user(user_id)    
 )
 
 CREATE TABLE order_detail (
     order_id uuid NOT NULL,
     product uuid NOT NULL,
     quantity SMALLINT,
-    unit_price NUMERIC(15,5),
+    unit_price NUMERIC(15,5), 'Selling price - Product/product_selling_price'
     PRIMARY KEY (order_id),
     FOREIGN KEY (order_id) REFERENCES order(order_id),
     FOREIGN KEY (product) REFERENCES product(product_id)
@@ -186,10 +184,12 @@ CREATE TABLE payment (
     payment_id uuid UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
     order uuid NOT NULL,
     customer uuid NOT NULL,
+    order_payment_method uuid NOT NULL,
     payment_date TIMESTAMP DEFAULT now(),
     PRIMARY KEY (payment_id),
     FOREIGN KEY (order) REFERENCES order(order_id),
-    FOREIGN KEY (customer) REFERENCES user(user_id)
+    FOREIGN KEY (customer) REFERENCES user(user_id),
+    FOREIGN KEY (order_payment_method) REFERENCES payment_method(payment_method_id)
 )
 
 'Only for restaurants/bars/coffe shop/'
